@@ -1,20 +1,15 @@
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const Fiber = require("fibers");
+const path = require("path");
 
-var path = require("path");
-
-module.exports = {
-  entry: [
-    __dirname + "/index.html",
-    '@babel/polyfill',
-    "./main.js"
-  ],
+module.exports = (env, argv) => ({
+  entry: [__dirname + "/index.html", "@babel/polyfill", "./main.js"],
   resolve: {
     alias: {
       src: path.resolve(__dirname, "src/"),
       css: path.resolve(__dirname, "assets/css/"),
       iconfont: path.resolve(__dirname, "assets/fonts/icomoon/"),
-      images: path.resolve(__dirname,"assets/images/")
+      images: path.resolve(__dirname, "assets/images/")
     },
     extensions: [".js", ".json", ".css", ".scss"]
   },
@@ -25,42 +20,38 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.html/, 
-        loader: 'file-loader?name=[name].[ext]', 
+        test: /\.html/,
+        loader: "file-loader?name=[name].[ext]"
       },
       {
         test: /\.js$/,
         use: {
           loader: "babel-loader",
-          options: { presets: [
-            "@babel/preset-env"
-          ]}
+          options: { presets: ["@babel/preset-env"] }
         }
       },
       {
         test: /\.(s*)css$/,
         use: [
           {
-            loader: "style-loader" // creates style nodes from JS strings
+            loader:
+              argv.mode !== "production"
+                ? "style-loader"
+                : MiniCssExtractPlugin.loader
           },
-          // {
-          //   loader: MiniCssExtractPlugin.loader,
-          //   options: {
-          //     // you can specify a publicPath here
-          //     // by default it uses publicPath in webpackOptions.output
-          //     publicPath: './dist/',
-          //     hmr: process.env.NODE_ENV === 'development',
-          //   },
-          // },
           {
             loader: "css-loader", // translates CSS into CommonJS
-            options: { importLoaders: 1}
+            options: { importLoaders: 1 }
           },
           {
             loader: "postcss-loader" // translates CSS into CommonJS
           },
           {
-            loader: "sass-loader" // compiles Sass to CSS
+            loader: "sass-loader",
+            options: {
+              implementation: require("dart-sass"),
+              fiber: Fiber
+            }
           }
         ]
       },
@@ -93,12 +84,11 @@ module.exports = {
     ]
   },
   plugins: [
-    // new HtmlWebpackPlugin(),
-    // new MiniCssExtractPlugin({
-    //   // Options similar to the same options in webpackOptions.output
-    //   // both options are optional
-    //   filename: '[name].css',
-    //   chunkFilename: '[id].css',
-    // }),
+    new MiniCssExtractPlugin({
+      // Options similar to the same options in webpackOptions.output
+      // both options are optional
+      filename: "[name].css",
+      chunkFilename: "[id].css"
+    })
   ]
-};
+});
