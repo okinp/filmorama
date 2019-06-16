@@ -1,0 +1,97 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>FILMORAMA</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Nikolas Psaroudakis">
+  </head>
+  <body class="body body--color-dark-gray">
+    <header class="header">
+        <img alt="logo" class="logo" src="images/logo.png">
+        <div class="searchbox">
+          <span class="searchbox__icon icon-search"></span>
+          <input id="search-field" class="searchbox__input" placeholder="Search movie...">
+        </div>
+    </header>
+    <section class="results js-results-container">
+
+    </section>
+    <template id="movie-card-temlate">
+      <div class="movie-card">
+        <div class="movie-card__content">
+          <img alt="poster" class="movie-card__poster" draggable="false" src="" > 
+          <section class="movie-card__details">
+            <span class="movie-title"></span> 
+            <div class="movie-extra-info">
+              <span class="year"></span>  
+              <span class="score"></span> 
+            </div>
+            <span class="movie-genres"></span> 
+            <div class="movie-description">
+            </div>
+          </section>
+        </div>
+        <div class="movie-card__frame"></div>
+    </template>
+    <template id="movie-review-template">
+      <div class="movie-review">
+        <span class="movie-review__author">
+          By Nikolas
+        </span>
+        <div class="movie-review__content">
+          I would not pay to see it. I did see it for free already...so at least, I was not cheated of my money [\"I laughed, I cried, I kissed $10 good-bye!\"--most other movies]. I saw sneak preview a few months back and it was the full-length feature but it was missing music in the end credit section and may have some added additional editing since then.  What I did see, it was on par with Thor: Dark World in quality and has higher wokeness than Han Solo and Star War: Last Jedi. Probably worst Marvel movie since the start of this universe started with the great Iron Man...only thing that could have been worse if Inhuman movie was made. So hold on to your money and maybe watch this at 2nd run thea...
+        </div>
+        <a class="movie-review__link" href="http://www.11888.gr" target="__">read more</a>
+      </div>
+    </template>
+    <template id="movie-extra-template">
+      <div class="movie-extra">
+        <div class="background">
+          <div class="backdrop">
+            <img alt="backdrop" class="backdrop__image" src="http://image.tmdb.org/t/p/w780/w2PMyoyLU22YvrGK3smVM9fW1jj.jpg">
+          </div>
+          <div class="fader"></div>
+        </div>
+        <div class="movie-extra__content">
+          <h1 class="movie-title">How to Train Your Dragon: The Hidden World</h1>
+          <section class="movie-card__overview">
+            <div class="movie-extra-info">
+              <span class="year">2019</span>  <!-- year -->
+              <span class="score">7.4/10</span> <!-- vote_average -->
+            </div>
+            <span class="movie-genres">Action, Comedy, Adventure, Fantasy</span> <!-- genres -->
+            <div class="movie-description">  <!-- overview -->
+            The story follows Carol Danvers as she becomes one of the universe’s most powerful heroes when Earth is caught in the middle of a galactic war between two alien races. Set in the 1990s, Captain Marvel is an all-new adventure from a previously unseen period in the history of the Marvel Cinematic Universe.
+            </div>
+          </section>
+          <section class="movie-card__trailers is-hidden">
+            <iframe title="trailer" width="560" height="315" src="https://www.youtube.com/embed/Y_JGZTlUbZg?controls=0" frameborder="0"></iframe>
+          </section>
+          <section class="movie-card__reviews is-hidden">
+
+          </section>
+          <section class="movie-card__similar is-hidden">
+
+          </section>
+        </div>
+        <ul class="menu" role="tablist">
+          <li class="overview active" id="tab-overview">
+            <a role="link" tabindex="0">OVERVIEW</a>
+          </li>
+          <li class="trailer" id="tab-trailer">
+            <a role="link" tabindex="0">TRAILER</a>
+          </li>
+          <li class="reviews" id="tab-reviews">
+            <a role="link" tabindex="0">REVIEWS</a>
+          </li>
+          <li class="similar" id="tab-similar">
+            <a role="link" tabindex="0">SIMILAR</a>
+          </li>
+        </ul>
+      </div>
+    </template>
+    <script type="text/javascript" src="bundle.js" defer></script>
+  </body>
+</html>

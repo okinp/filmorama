@@ -1,0 +1,381 @@
+
+/** 
+* TODO:
+* - Clean up css, have consistent naming conventions
+* - Move all modifier classes to the top
+* - Decrease specificity of rules - depth
+*/
+
+@import '~css/variables';
+@import '~css/typography';
+
+* {
+  box-sizing: border-box;
+  -moz-backface-visibility:    hidden;
+  -ms-backface-visibility:     hidden;
+}
+
+.body {
+  margin: 0;
+}
+
+.body--color-dark-gray {
+  background-color: $netflix-gray;
+}
+
+.header {
+  height: 5.5em;
+  padding: 0 2em;
+  background-color: rgba(0,0,0,1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: fixed;
+  width: 100%;
+  z-index: 3;
+}
+
+.logo {
+  height: 2.2em;
+}
+
+.searchbox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 0.05em solid white;
+  padding: 0.4em 0.6em;
+}
+
+.searchbox__icon.icon-search {
+  font-size: 1.3em;
+  font-weight: 700;
+  margin-right: 0.4em;
+  line-height: 1;
+  color: #fff;
+  text-shadow: 0 1px 1px rgba(0,0,0,.3);
+}
+
+.searchbox__input {
+  height: 2.5em;
+  caret-color: white;
+  background-color : rgba(0,0,0,0); 
+  flex-grow: 1;
+  outline: none;
+  border: none;
+  color: white;
+  font-size: 0.9em;
+}
+
+.results {
+  padding-top: 12em;
+  padding-bottom: 12em;
+  max-width: 1250px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.movie-card {
+  padding: 5px;
+  width: 250px;
+  height: 369px;
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+  will-change: auto;
+  transition: all $transition;
+  .movie-card__details {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 140px;
+    bottom: 0px;
+    position: absolute;
+    background-color: rgba(0,0,0,0.85);
+    padding: 8px;
+    opacity: 0;
+    .movie-title {
+      font-size: 1em;
+      font-weight: 500;
+    }
+    .movie-genres {
+      font-weight: 400;
+      font-size: 0.75em;
+      color: $light-gray;
+      color: $netflix-red;
+    }
+    .movie-genres, .movie-title {
+      white-space: nowrap; 
+      width: 100%; 
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-align: left;
+    }
+    .movie-extra-info {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 300;
+      font-size: 0.75em;
+      padding-top: 2px;
+      .score {
+        color: $yellow;
+        font-weight: 500;
+      }
+    }
+    .movie-description {
+      // font-family: 'Ubuntu Mono', monospace;
+      flex-grow: 1;
+      text-align: left;
+      overflow: hidden;
+      max-height: 68px;
+      padding-top: 0px;
+      font-size: 0.7em;
+      line-height: 1;
+    }
+  }
+  &:hover:not(.is-expanded):not(.moved) {
+    z-index: 2;
+    transform: scale3d(1.2,1.2, 1);
+    .movie-card__details {
+      opacity: 1;
+    }
+    .movie-card__frame {
+      z-index: 1;
+    }
+  }
+  &.is-expanded {
+    z-index: 1;
+    > .movie-card__frame {
+      display: initial;
+    }
+  }
+}
+
+.moved {
+  transition: none;
+  transform: translateY(-500px);
+}
+
+.movie-card__content {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 3px;
+  position: relative;
+  > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    user-select: none;
+  }
+}
+
+
+
+.movie-card__frame {
+  box-sizing: border-box;
+  border: solid 4px #fff;
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  right: 5px;
+  bottom: 5px;
+  box-shadow: 0 4px 4px rgba(0,0,0,.2);
+  border-radius: 3px;
+  display: none;
+  z-index: 0;
+  &:after {
+    content: "";
+    width: 0;
+    height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-top: 15px solid #fff;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -17px;
+    position: absolute;
+  }
+}
+.movie-extra {
+  height: 550px;
+  width: 100%;
+  flex-grow: 1;
+  background-color: black;
+  margin: 0 5px;
+  border-radius: 3px;
+  transform-origin: 50% 0 0;
+  transform: scale(1, 0);
+  opacity: 0;
+  transition: all $transition;
+  will-change: true;
+  overflow: hidden;
+  &.open {
+    transform: scale(1, 1);
+    opacity: 1;
+  }
+  .background {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: -1;
+    overflow: hidden;
+    .backdrop {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: auto;
+      width: 65%;
+      z-index: 1;
+      opacity: 0.9;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        user-select: none;
+        opacity: 1;
+      }
+    }
+    .fader {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: auto;
+      width: 60%;
+      z-index: 2;
+      background: linear-gradient(.25turn, black, 95%, rgba(0,0,0,0));
+    }
+  }
+  .movie-extra__content {
+    width: 100%;
+    height: 100%;
+    padding: 1em;
+    padding-bottom: 2em;
+    display: flex;
+    flex-direction: column;
+  }
+  section {
+    width: 100%;
+    height: 100%;
+  }
+  .movie-card__overview {
+    width: 50%;
+    height: 100%;
+    
+    display: flex;
+    flex-direction: column;
+    .movie-title {
+      font-size: 2em;
+      font-weight: bold;
+      white-space: nowrap; 
+    }
+    .movie-extra-info {
+      margin-top: 0.2em;
+      font-size: 1.1em;
+      font-weight: bold;
+      .score {
+        margin-left: 2em;
+        color: $yellow;
+      }
+    }
+    .movie-genres {
+      padding-top: 0.125em;
+      color: $netflix-red;
+      font-weight: bold;
+    }
+    .movie-description {
+      padding-top: 2em;
+      font-size: 1.125em;
+      color: $light-gray;
+    }
+  }
+  .movie-card__trailers {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .movie-card__reviews {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 100%;
+    margin: 1.5em;
+    background: rgba(0,0,0,0.75);
+    background: linear-gradient(to right, rgba(0,0,0,0.75) 0%, rgba(0,0,0,1) 50%, rgba(0,0,0,0.65) 100%);
+    > .movie-review {
+      max-height: 100%;
+      max-width: 50%;
+      margin-top: 1.5em;
+      overflow-y: auto;
+      > .movie-review__content {
+        margin: 1.5em;
+      }
+    }
+  }
+  .movie-card__similar {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+  section.is-hidden {
+    display: none;
+  }
+  ul.menu {
+    list-style-type: none;
+    position: absolute;
+    bottom: 10px;
+    margin: 0 auto;
+    padding: 0;
+    font-weight: 700;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    opacity: 1;
+    transition: opacity 1s ease-in-out;
+    &.is-hidden {
+      display: none;
+      opacity: 0;
+      transition: opacity 0s ease-in-out;
+    }
+    > li {
+      display: inline-flex;
+      line-height: 1;
+      position: relative;
+      margin: 0 10px;
+      padding: 0 3px;
+      justify-content: center;
+
+      &.is-hidden {
+        display: none;
+      }
+
+      &:before {
+        content: "";
+        position: absolute;
+        bottom: -12px;
+        background-color: $netflix-red;
+        width: 100%;
+        height: 6px;
+        display: none;
+      }
+      &.active {
+        &:before {
+          display: inline-block;
+        }
+      }
+      > a {
+        margin: 0 auto;
+        display: inline-block;
+        cursor: pointer;
+        &:focus {
+          outline: none;
+        }
+      }
+    }
+  }
+}
